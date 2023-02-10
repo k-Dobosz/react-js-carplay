@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/slicedToArray'), require('react'), require('jmuxer'), require('react-modal'), require('@babel/runtime/helpers/classCallCheck'), require('@babel/runtime/helpers/createClass'), require('@babel/runtime/helpers/inherits'), require('@babel/runtime/helpers/possibleConstructorReturn'), require('@babel/runtime/helpers/getPrototypeOf'), require('@mui/material'), require('@mui/material/useMediaQuery'), require('@mui/material/styles'), require('socket.io-client')) :
-  typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/slicedToArray', 'react', 'jmuxer', 'react-modal', '@babel/runtime/helpers/classCallCheck', '@babel/runtime/helpers/createClass', '@babel/runtime/helpers/inherits', '@babel/runtime/helpers/possibleConstructorReturn', '@babel/runtime/helpers/getPrototypeOf', '@mui/material', '@mui/material/useMediaQuery', '@mui/material/styles', 'socket.io-client'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global["react-js-carplay"] = {}, global._slicedToArray, global.React, global.JMuxer, global.Modal, global._classCallCheck, global._createClass, global._inherits, global._possibleConstructorReturn, global._getPrototypeOf, global.material, null, global.styles, global.io));
-})(this, (function (exports, _slicedToArray, React, JMuxer, Modal, _classCallCheck, _createClass, _inherits, _possibleConstructorReturn, _getPrototypeOf, material, useMediaQuery, styles, io) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/slicedToArray'), require('react'), require('jmuxer'), require('react-modal'), require('socket.io-client')) :
+  typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/slicedToArray', 'react', 'jmuxer', 'react-modal', 'socket.io-client'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global["react-js-carplay"] = {}, global._slicedToArray, global.React, global.JMuxer, global.Modal, global.io));
+})(this, (function (exports, _slicedToArray, React, JMuxer, Modal, io) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -10,11 +10,6 @@
   var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
   var JMuxer__default = /*#__PURE__*/_interopDefaultLegacy(JMuxer);
   var Modal__default = /*#__PURE__*/_interopDefaultLegacy(Modal);
-  var _classCallCheck__default = /*#__PURE__*/_interopDefaultLegacy(_classCallCheck);
-  var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
-  var _inherits__default = /*#__PURE__*/_interopDefaultLegacy(_inherits);
-  var _possibleConstructorReturn__default = /*#__PURE__*/_interopDefaultLegacy(_possibleConstructorReturn);
-  var _getPrototypeOf__default = /*#__PURE__*/_interopDefaultLegacy(_getPrototypeOf);
   var io__default = /*#__PURE__*/_interopDefaultLegacy(io);
 
   var global$1 = (typeof global !== "undefined" ? global :
@@ -1996,168 +1991,14 @@
 
   var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
 
-  var css = ".App {\n  text-align: center;\n}\n\n.App-logo {\n  height: 40vmin;\n  pointer-events: none;\n}\n\n.video-wrapper {\n    width: 100%;\n    height: 100%;\n    margin: 0;\n    padding: 0;\n    background: aliceblue;\n}\n\nhtml, body, #root, .App {\n  height: 100%;\n}\n\nhtml, body, #root, .App {\n  height: 100%;\n}\n\nbody {\n  font-family: \"Montserrat\";\n}\n\n\n@media (prefers-reduced-motion: no-preference) {\n  .App-logo {\n    animation: App-logo-spin infinite 20s linear;\n  }\n}\n\n.App-header {\n  background-color: #282c34;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  font-size: calc(10px + 2vmin);\n  color: white;\n}\n\n.App-link {\n  color: #61dafb;\n}\n\n@keyframes App-logo-spin {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n}\n";
+  var css = "#root, #main {\n  height: 100%;\n}\n\n.App {\n  height: 100%; /* calc(100% - 23.5vh) */\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n\n.loading {\n  width: 100px;\n  height: 100px;\n}\n\n.loading::after {\n  content: ' ';\n  display: block;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  border: 5px solid #fff;\n  border-color: #fff transparent #fff #fff;\n  animation: rotate 1s linear infinite;\n}\n\n@keyframes rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}";
   n(css,{});
 
-  var Webcam = function Webcam() {
-    var videoRef = React.useRef(null);
-    var _useState = React.useState(false),
-      _useState2 = _slicedToArray__default["default"](_useState, 2),
-      cameraFound = _useState2[0],
-      setCameraFound = _useState2[1];
-    React.useEffect(function () {
-      getVideo();
-    }, [videoRef]);
-    var getVideo = function getVideo() {
-      navigator.mediaDevices.getUserMedia({
-        video: {
-          width: 800
-        }
-      }).then(function (stream) {
-        setCameraFound(true);
-        var video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })["catch"](function (err) {
-        console.error("error:", err);
-      });
-    };
-    return /*#__PURE__*/React__default["default"].createElement("div", null, /*#__PURE__*/React__default["default"].createElement("div", null, cameraFound ? /*#__PURE__*/React__default["default"].createElement("video", {
-      ref: videoRef,
-      style: {
-        maxWidth: '100%',
-        height: 'auto'
-      }
-    }) : /*#__PURE__*/React__default["default"].createElement(material.Typography, null, "No Camera Found")));
-  };
-
-  function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf__default["default"](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default["default"](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default["default"](this, result); }; }
-  function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-  var Settings = /*#__PURE__*/function (_Component) {
-    _inherits__default["default"](Settings, _Component);
-    var _super = _createSuper(Settings);
-    function Settings() {
-      var _this;
-      _classCallCheck__default["default"](this, Settings);
-      _this = _super.call(this);
-      _this.state = {};
-      return _this;
-    }
-    _createClass__default["default"](Settings, [{
-      key: "render",
-      value: function render() {
-        var _this2 = this;
-        var getInput = function getInput(k, v) {
-          switch (k) {
-            case 'fps':
-              return /*#__PURE__*/React__default["default"].createElement(material.TextField, {
-                type: 'number',
-                label: k,
-                min: 10,
-                value: v,
-                onChange: function onChange(e) {
-                  e.preventDefault();
-                  console.log(e.target.value);
-                  _this2.props.changeValue(k, parseInt(e.target.value));
-                }
-              });
-            case 'lhd':
-              return /*#__PURE__*/React__default["default"].createElement(material.FormControlLabel, {
-                control: /*#__PURE__*/React__default["default"].createElement(material.Checkbox, {
-                  checked: v,
-                  onChange: function onChange(e) {
-                    e.preventDefault();
-                    _this2.props.changeValue(k, e.target.checked ? 1 : 0);
-                  }
-                }),
-                label: k
-              });
-            case 'kiosk':
-              return /*#__PURE__*/React__default["default"].createElement(material.FormControlLabel, {
-                control: /*#__PURE__*/React__default["default"].createElement(material.Checkbox, {
-                  checked: v,
-                  onChange: function onChange(e) {
-                    e.preventDefault();
-                    _this2.props.changeValue(k, e.target.checked);
-                  }
-                }),
-                label: k
-              });
-            default:
-              return /*#__PURE__*/React__default["default"].createElement(material.TextField, {
-                type: 'number',
-                label: k,
-                value: v,
-                onChange: function onChange(e) {
-                  e.preventDefault();
-                  _this2.props.changeValue(k, parseInt(e.target.value));
-                }
-              });
-          }
-        };
-        var keys = Object.keys(this.props.settings);
-        return /*#__PURE__*/React__default["default"].createElement(material.Grid, {
-          container: true,
-          spacing: 3,
-          sx: {
-            height: '100%'
-          }
-        }, /*#__PURE__*/React__default["default"].createElement(material.Grid, {
-          item: true,
-          xs: 3
-        }, /*#__PURE__*/React__default["default"].createElement(material.Box, {
-          sx: {
-            display: 'flex',
-            justifyContent: 'space-around',
-            p: 1,
-            m: 1,
-            flexDirection: "column",
-            height: '100%'
-          }
-        }, keys.map(function (key) {
-          return getInput(key, _this2.props.settings[key]);
-        }))), /*#__PURE__*/React__default["default"].createElement(material.Grid, {
-          item: true,
-          xs: 9
-        }, /*#__PURE__*/React__default["default"].createElement(Webcam, null)), /*#__PURE__*/React__default["default"].createElement(material.Grid, {
-          item: true,
-          xs: 12
-        }, /*#__PURE__*/React__default["default"].createElement(material.Button, {
-          style: {
-            marginTop: 'auto',
-            marginLeft: 'auto',
-            marginRight: 'auto'
-          },
-          onClick: function onClick() {
-            return _this2.props.reqReload();
-          }
-        }, "click to reload")));
-      }
-    }]);
-    return Settings;
-  }(React.Component);
-
-  var socket$1 = io__default["default"]("ws://localhost:5005");
-  var customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      minWidth: '80%',
-      transform: 'translate(-50%, -50%)',
-      overflow: 'scroll'
-    }
-  };
+  var socket$1 = io__default["default"]('ws://localhost:5005');
   function Carplay(_ref) {
-    var changeSetting = _ref.changeSetting,
-      settings = _ref.settings,
+    var settings = _ref.settings,
       touchEvent = _ref.touchEvent,
-      reload = _ref.reload,
-      openModal = _ref.openModal,
-      openModalReq = _ref.openModalReq,
-      closeModalReq = _ref.closeModalReq;
+      style = _ref.style;
     var _useState = React.useState(0),
       _useState2 = _slicedToArray__default["default"](_useState, 2),
       height = _useState2[0],
@@ -2182,15 +2023,14 @@
       _useState12 = _slicedToArray__default["default"](_useState11, 2),
       status = _useState12[0],
       setStatus = _useState12[1];
-    var _useState13 = React.useState(false),
+    var _useState13 = React.useState(true),
       _useState14 = _slicedToArray__default["default"](_useState13, 2),
-      modalOpen = _useState14[0],
-      setModalOpen = _useState14[1];
+      isLoading = _useState14[0],
+      setIsLoading = _useState14[1];
     var ref = React.useRef(null);
-    styles.useTheme();
     React.useEffect(function () {
       Modal__default["default"].setAppElement(document.getElementById('main'));
-      console.log("creating carplay", settings);
+      console.log('creating carplay', settings);
       var jmuxer = new JMuxer__default["default"]({
         node: 'player',
         mode: 'video',
@@ -2201,41 +2041,41 @@
       });
       var height = ref.current.clientHeight;
       var width = ref.current.clientWidth;
+      console.log('height', height);
+      console.log('width', width);
       setHeight(height);
       setWidth(width);
       socket$1.on('carplay', function (data) {
         var buf = Buffer.from(data);
         var duration = buf.readInt32BE(0);
         var video = buf.slice(4);
-        //console.log("duration was: ", duration)
+        // console.log("duration was: ", duration)
         jmuxer.feed({
           video: new Uint8Array(video),
           duration: duration
         });
+        if (isLoading) setIsLoading(false);
       });
       socket$1.on('status', function (_ref2) {
         var status = _ref2.status;
-        console.log("new status", status);
+        console.log('new status', status);
         setStatus(status);
       });
       socket$1.emit('statusReq');
       socket$1.on('quit', function () {
-        return openModalReq();
+        socket$1.emit('status', {
+          status: false
+        });
+        jmuxer.destroy();
       });
       return function () {
-        console.log("cleaning");
+        console.log('cleaning');
         socket$1.off('carplay');
         socket$1.off('status');
         socket$1.off('quit');
         jmuxer.destroy();
       };
     }, []);
-    React.useEffect(function () {
-      setModalOpen(openModal);
-    }, [openModal]);
-    var changeValue = function changeValue(k, v) {
-      changeSetting(k, v);
-    };
     var handleMDown = function handleMDown(e) {
       var currentTargetRect = e.target.getBoundingClientRect();
       var x = e.clientX - currentTargetRect.left;
@@ -2292,10 +2132,8 @@
       touchEvent(15, x, y);
     };
     return /*#__PURE__*/React__default["default"].createElement("div", {
-      style: {
-        height: '100%'
-      },
-      id: 'main'
+      id: 'main',
+      style: style
     }, /*#__PURE__*/React__default["default"].createElement("div", {
       ref: ref,
       className: "App",
@@ -2313,56 +2151,22 @@
           handleMMove(e);
         }
       },
-      style: {
-        height: '100%',
-        width: '100%',
-        padding: 0,
-        margin: 0,
-        display: 'flex'
-      }
+      style: {}
     }, /*#__PURE__*/React__default["default"].createElement("video", {
       style: {
-        height: status ? "100%" : "0%"
+        height: isLoading ? '0' : '100%'
       },
       autoPlay: true,
       muted: true,
       id: "player"
-    }), status ? /*#__PURE__*/React__default["default"].createElement("div", null) : /*#__PURE__*/React__default["default"].createElement("div", {
-      style: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        textAlign: 'center',
-        flexGrow: '1'
-      }
-    }, /*#__PURE__*/React__default["default"].createElement("div", {
-      style: {
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        textAlign: 'center',
-        flexGrow: '1'
-      }
-    }, "CONNECT IPHONE TO BEGIN CARPLAY"), /*#__PURE__*/React__default["default"].createElement(material.Button, {
-      onMouseDown: openModalReq,
-      onTouchStart: openModalReq
-    }, "Settings"), status ? /*#__PURE__*/React__default["default"].createElement("button", null, "Open Carplay") : /*#__PURE__*/React__default["default"].createElement("div", null))), /*#__PURE__*/React__default["default"].createElement(material.Dialog, {
-      open: modalOpen
-      // onAfterOpen={afterOpenModal}
-      ,
-      maxWidth: 'xl',
-      fullWidth: true,
-      onClose: closeModalReq,
-      contentLabel: "Settings",
-      ariaHideApp: true,
-      styles: customStyles,
-      sx: {
-        minWidth: '80%',
-        minHeight: '80%'
-      }
-    }, /*#__PURE__*/React__default["default"].createElement(Settings, {
-      settings: settings,
-      changeValue: changeValue,
-      reqReload: reload
-    })));
+    }), status ? isLoading ? /*#__PURE__*/React__default["default"].createElement("div", {
+      className: "loading"
+    }) : '' :
+    /*#__PURE__*/
+    // <div style={{marginTop: 'auto', marginBottom: 'auto', textAlign: 'center', flexGrow: '1'}}>
+    //     <div style={{marginTop: 'auto', marginBottom: 'auto', textAlign: 'center', flexGrow: '1'}}></div>
+    // </div>
+    React__default["default"].createElement("div", null, "CONNECT IPHONE TO BEGIN CARPLAY")));
   }
 
   function PCMPlayer(option) {
