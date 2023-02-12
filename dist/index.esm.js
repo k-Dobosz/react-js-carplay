@@ -1983,7 +1983,7 @@ function isSlowBuffer (obj) {
 
 var e=[],t=[];function n(n,r){if(n&&"undefined"!=typeof document){var a,s=!0===r.prepend?"prepend":"append",d=!0===r.singleTag,i="string"==typeof r.container?document.querySelector(r.container):document.getElementsByTagName("head")[0];if(d){var u=e.indexOf(i);-1===u&&(u=e.push(i)-1,t[u]={}),a=t[u]&&t[u][s]?t[u][s]:t[u][s]=c();}else a=c();65279===n.charCodeAt(0)&&(n=n.substring(1)),a.styleSheet?a.styleSheet.cssText+=n:a.appendChild(document.createTextNode(n));}function c(){var e=document.createElement("style");if(e.setAttribute("type","text/css"),r.attributes)for(var t=Object.keys(r.attributes),n=0;n<t.length;n++)e.setAttribute(t[n],r.attributes[t[n]]);var a="prepend"===s?"afterbegin":"beforeend";return i.insertAdjacentElement(a,e),e}}
 
-var css = "#root, #main {\n  height: 100%;\n}\n\n.App {\n  height: 100%; /* calc(100% - 23.5vh) */\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n\n.loading {\n  width: 100px;\n  height: 100px;\n}\n\n.loading::after {\n  content: ' ';\n  display: block;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  border: 5px solid #fff;\n  border-color: #fff transparent #fff #fff;\n  animation: rotate 1s linear infinite;\n}\n\n@keyframes rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}";
+var css = "#root, #main {\n  height: 100%;\n}\n\n.App {\n  height: 100%; /* calc(100% - 23.5vh) */\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n}\n\n#player {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  margin: 0;\n  padding: 0;\n  background: black;\n}\n\n.loading {\n  width: 100px;\n  height: 100px;\n}\n\n.loading::after {\n  content: ' ';\n  display: block;\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  border: 5px solid #fff;\n  border-color: #fff transparent #fff #fff;\n  animation: rotate 1s linear infinite;\n}\n\n@keyframes rotate {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}";
 n(css,{});
 
 var socket$1 = io('ws://localhost:5005');
@@ -2033,8 +2033,6 @@ function Carplay(_ref) {
     });
     var height = ref.current.clientHeight;
     var width = ref.current.clientWidth;
-    console.log('height', height);
-    console.log('width', width);
     setHeight(height);
     setWidth(width);
     socket$1.on('carplay', function (data) {
@@ -2127,7 +2125,6 @@ function Carplay(_ref) {
     id: 'main',
     style: style
   }, /*#__PURE__*/React.createElement("div", {
-    ref: ref,
     className: "App",
     onTouchStart: handleDown,
     onTouchEnd: handleUp,
@@ -2146,19 +2143,15 @@ function Carplay(_ref) {
     style: {}
   }, /*#__PURE__*/React.createElement("video", {
     style: {
-      height: isLoading ? '0' : '100%'
+      visibility: isLoading ? 'hidden' : 'visible'
     },
+    ref: ref,
     autoPlay: true,
     muted: true,
     id: "player"
   }), status ? isLoading ? /*#__PURE__*/React.createElement("div", {
     className: "loading"
-  }) : '' :
-  /*#__PURE__*/
-  // <div style={{marginTop: 'auto', marginBottom: 'auto', textAlign: 'center', flexGrow: '1'}}>
-  //     <div style={{marginTop: 'auto', marginBottom: 'auto', textAlign: 'center', flexGrow: '1'}}></div>
-  // </div>
-  React.createElement("div", null, "CONNECT IPHONE TO BEGIN CARPLAY")));
+  }) : '' : /*#__PURE__*/React.createElement("div", null, "CONNECT IPHONE TO BEGIN CARPLAY")));
 }
 
 function PCMPlayer(option) {

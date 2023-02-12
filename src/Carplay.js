@@ -128,7 +128,6 @@ function Carplay({ settings, touchEvent, style }) {
   return (
     <div id={'main'} style={style}>
       <div
-        ref={ref}
         className="App"
         onTouchStart={handleDown}
         onTouchEnd={handleUp}
@@ -147,7 +146,8 @@ function Carplay({ settings, touchEvent, style }) {
         style={{}}
       >
         <video
-          style={{ height: isLoading ? '0' : '100%' }}
+          style={{ visibility: isLoading ? 'hidden' : 'visible' }}
+          ref={ref}
           autoPlay
           muted
           id="player"
