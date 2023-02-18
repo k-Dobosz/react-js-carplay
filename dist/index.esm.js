@@ -2013,8 +2013,8 @@ function Carplay(_ref) {
     setLastY = _useState10[1];
   var _useState11 = useState(false),
     _useState12 = _slicedToArray(_useState11, 2),
-    status = _useState12[0],
-    setStatus = _useState12[1];
+    localStatus = _useState12[0],
+    setLocalStatus = _useState12[1];
   var _useState13 = useState(true),
     _useState14 = _slicedToArray(_useState13, 2),
     isLoading = _useState14[0],
@@ -2048,8 +2048,8 @@ function Carplay(_ref) {
     });
     socket$1.on('status', function (_ref2) {
       var status = _ref2.status;
-      console.log('new status', status);
-      setStatus(status);
+      if (localStatus === false && status === false) setIsLoading(true);
+      setLocalStatus(status);
     });
     socket$1.emit('statusReq');
     socket$1.on('quit', function () {
@@ -2139,8 +2139,7 @@ function Carplay(_ref) {
       if (mouseDown) {
         handleMMove(e);
       }
-    },
-    style: {}
+    }
   }, /*#__PURE__*/React.createElement("video", {
     style: {
       visibility: isLoading ? 'hidden' : 'visible'
@@ -2149,7 +2148,7 @@ function Carplay(_ref) {
     autoPlay: true,
     muted: true,
     id: "player"
-  }), status ? isLoading ? /*#__PURE__*/React.createElement("div", {
+  }), localStatus ? isLoading ? /*#__PURE__*/React.createElement("div", {
     className: "loading"
   }) : '' : /*#__PURE__*/React.createElement("div", null, "CONNECT IPHONE TO BEGIN CARPLAY")));
 }

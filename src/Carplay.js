@@ -11,7 +11,7 @@ function Carplay({ settings, touchEvent, style }) {
   const [mouseDown, setMouseDown] = useState(false)
   const [lastX, setLastX] = useState(0)
   const [lastY, setLastY] = useState(0)
-  const [status, setStatus] = useState(false)
+  const [localStatus, setLocalStatus] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const ref = useRef(null)
 
@@ -44,8 +44,9 @@ function Carplay({ settings, touchEvent, style }) {
     })
 
     socket.on('status', ({ status }) => {
-      console.log('new status', status)
-      setStatus(status)
+      if (localStatus === false && status === false) setIsLoading(true)
+
+      setLocalStatus(status)
     })
 
     socket.emit('statusReq')
@@ -143,7 +144,6 @@ function Carplay({ settings, touchEvent, style }) {
             handleMMove(e)
           }
         }}
-        style={{}}
       >
         <video
           style={{ visibility: isLoading ? 'hidden' : 'visible' }}
@@ -152,7 +152,7 @@ function Carplay({ settings, touchEvent, style }) {
           muted
           id="player"
         />
-        {status ? (
+        {localStatus ? (
           isLoading ? (
             <div className="loading"></div>
           ) : (

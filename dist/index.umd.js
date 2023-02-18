@@ -2021,8 +2021,8 @@
       setLastY = _useState10[1];
     var _useState11 = React.useState(false),
       _useState12 = _slicedToArray__default["default"](_useState11, 2),
-      status = _useState12[0],
-      setStatus = _useState12[1];
+      localStatus = _useState12[0],
+      setLocalStatus = _useState12[1];
     var _useState13 = React.useState(true),
       _useState14 = _slicedToArray__default["default"](_useState13, 2),
       isLoading = _useState14[0],
@@ -2056,8 +2056,8 @@
       });
       socket$1.on('status', function (_ref2) {
         var status = _ref2.status;
-        console.log('new status', status);
-        setStatus(status);
+        if (localStatus === false && status === false) setIsLoading(true);
+        setLocalStatus(status);
       });
       socket$1.emit('statusReq');
       socket$1.on('quit', function () {
@@ -2147,8 +2147,7 @@
         if (mouseDown) {
           handleMMove(e);
         }
-      },
-      style: {}
+      }
     }, /*#__PURE__*/React__default["default"].createElement("video", {
       style: {
         visibility: isLoading ? 'hidden' : 'visible'
@@ -2157,7 +2156,7 @@
       autoPlay: true,
       muted: true,
       id: "player"
-    }), status ? isLoading ? /*#__PURE__*/React__default["default"].createElement("div", {
+    }), localStatus ? isLoading ? /*#__PURE__*/React__default["default"].createElement("div", {
       className: "loading"
     }) : '' : /*#__PURE__*/React__default["default"].createElement("div", null, "CONNECT IPHONE TO BEGIN CARPLAY")));
   }
