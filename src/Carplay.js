@@ -4,6 +4,7 @@ import JMuxer from 'jmuxer'
 import Modal from 'react-modal'
 import io from 'socket.io-client'
 const socket = io('ws://localhost:5005')
+let jmuxer
 
 function Carplay({ settings, touchEvent, style }) {
   const [height, setHeight] = useState(0)
@@ -18,7 +19,7 @@ function Carplay({ settings, touchEvent, style }) {
   useEffect(() => {
     Modal.setAppElement(document.getElementById('main'))
     console.log('creating carplay', settings)
-    const jmuxer = new JMuxer({
+    jmuxer = new JMuxer({
       node: 'player',
       mode: 'video',
       maxDelay: 30,
@@ -34,11 +35,7 @@ function Carplay({ settings, touchEvent, style }) {
     setWidth(width)
 
     socket.on('carplay', (data) => {
-      const buf = Buffer.from(data)
-      const duration = buf.readInt32BE(0)
-      const video = buf.slice(4)
-      // console.log("duration was: ", duration)
-      jmuxer.feed({ video: new Uint8Array(video), duration })
+      feed(data)
 
       if (isLoading) setIsLoading(false)
     })
@@ -65,6 +62,14 @@ function Carplay({ settings, touchEvent, style }) {
     }
   }, [])
 
+  const feed = async (data) => {
+    const buf = Buffer.from(data)
+    const duration = buf.readInt32BE(0)
+    const video = buf.slice(4)
+    // console.log("duration was: ", duration)
+    jmuxer.feed({ video: new Uint8Array(video), duration: duration })
+  }
+
   const handleMDown = (e) => {
     const currentTargetRect = e.target.getBoundingClientRect()
     let x = e.clientX - currentTargetRect.left
@@ -74,7 +79,7 @@ function Carplay({ settings, touchEvent, style }) {
     setLastX(x)
     setLastY(y)
     setMouseDown(true)
-    touchEvent(14, x, y)
+    socket.emit('click', { type: 14, x: x, y: y })
   }
 
   const handleMUp = (e) => {
@@ -83,8 +88,9 @@ function Carplay({ settings, touchEvent, style }) {
     let y = e.clientY - currentTargetRect.top
     x = x / width
     y = y / height
+    console.log('up')
     setMouseDown(false)
-    touchEvent(16, x, y)
+    socket.emit('click', { type: 16, x: x, y: y })
   }
 
   const handleMMove = (e) => {
@@ -93,7 +99,7 @@ function Carplay({ settings, touchEvent, style }) {
     let y = e.clientY - currentTargetRect.top
     x = x / width
     y = y / height
-    touchEvent(15, x, y)
+    socket.emit('click', { type: 15, x: x, y: y })
   }
 
   const handleDown = (e) => {
@@ -105,7 +111,7 @@ function Carplay({ settings, touchEvent, style }) {
     setLastX(x)
     setLastY(y)
     setMouseDown(true)
-    touchEvent(14, x, y)
+    socket.emit('click', { type: 14, x: x, y: y })
     e.preventDefault()
   }
 
@@ -113,7 +119,8 @@ function Carplay({ settings, touchEvent, style }) {
     const x = lastX
     const y = lastY
     setMouseDown(false)
-    touchEvent(16, x, y)
+    console.log('up')
+    socket.emit('click', { type: 16, x: x, y: y })
     e.preventDefault()
   }
 
@@ -123,7 +130,7 @@ function Carplay({ settings, touchEvent, style }) {
     let y = e.touches[0].clientY - currentTargetRect.top
     x = x / width
     y = y / height
-    touchEvent(15, x, y)
+    socket.emit('click', { type: 15, x: x, y: y })
   }
 
   return (
