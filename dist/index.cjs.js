@@ -2,7 +2,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var _asyncToGenerator = require('@babel/runtime/helpers/asyncToGenerator');
 var _slicedToArray = require('@babel/runtime/helpers/slicedToArray');
+var _regeneratorRuntime = require('@babel/runtime/regenerator');
 var React = require('react');
 var JMuxer = require('jmuxer');
 var Modal = require('react-modal');
@@ -10,7 +12,9 @@ var io = require('socket.io-client');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var _asyncToGenerator__default = /*#__PURE__*/_interopDefaultLegacy(_asyncToGenerator);
 var _slicedToArray__default = /*#__PURE__*/_interopDefaultLegacy(_slicedToArray);
+var _regeneratorRuntime__default = /*#__PURE__*/_interopDefaultLegacy(_regeneratorRuntime);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var JMuxer__default = /*#__PURE__*/_interopDefaultLegacy(JMuxer);
 var Modal__default = /*#__PURE__*/_interopDefaultLegacy(Modal);
@@ -1999,10 +2003,11 @@ var css = "#root, #main {\n  height: 100%;\n}\n\n.App {\n  height: 100%; /* calc
 n(css,{});
 
 var socket$1 = io__default["default"]('ws://localhost:5005');
+var jmuxer;
 function Carplay(_ref) {
-  var settings = _ref.settings,
-    touchEvent = _ref.touchEvent,
-    style = _ref.style;
+  var settings = _ref.settings;
+    _ref.touchEvent;
+    var style = _ref.style;
   var _useState = React.useState(0),
     _useState2 = _slicedToArray__default["default"](_useState, 2),
     height = _useState2[0],
@@ -2035,7 +2040,7 @@ function Carplay(_ref) {
   React.useEffect(function () {
     Modal__default["default"].setAppElement(document.getElementById('main'));
     console.log('creating carplay', settings);
-    var jmuxer = new JMuxer__default["default"]({
+    jmuxer = new JMuxer__default["default"]({
       node: 'player',
       mode: 'video',
       maxDelay: 30,
@@ -2048,14 +2053,7 @@ function Carplay(_ref) {
     setHeight(height);
     setWidth(width);
     socket$1.on('carplay', function (data) {
-      var buf = Buffer.from(data);
-      var duration = buf.readInt32BE(0);
-      var video = buf.slice(4);
-      // console.log("duration was: ", duration)
-      jmuxer.feed({
-        video: new Uint8Array(video),
-        duration: duration
-      });
+      feed(data);
       if (isLoading) setIsLoading(false);
     });
     socket$1.on('status', function (_ref2) {
@@ -2078,6 +2076,29 @@ function Carplay(_ref) {
       jmuxer.destroy();
     };
   }, []);
+  var feed = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(data) {
+      var buf, duration, video;
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            buf = Buffer.from(data);
+            duration = buf.readInt32BE(0);
+            video = buf.slice(4); // console.log("duration was: ", duration)
+            jmuxer.feed({
+              video: new Uint8Array(video),
+              duration: duration
+            });
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function feed(_x) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
   var handleMDown = function handleMDown(e) {
     var currentTargetRect = e.target.getBoundingClientRect();
     var x = e.clientX - currentTargetRect.left;
@@ -2087,7 +2108,11 @@ function Carplay(_ref) {
     setLastX(x);
     setLastY(y);
     setMouseDown(true);
-    touchEvent(14, x, y);
+    socket$1.emit('click', {
+      type: 14,
+      x: x,
+      y: y
+    });
   };
   var handleMUp = function handleMUp(e) {
     var currentTargetRect = e.target.getBoundingClientRect();
@@ -2095,8 +2120,13 @@ function Carplay(_ref) {
     var y = e.clientY - currentTargetRect.top;
     x = x / width;
     y = y / height;
+    console.log('up');
     setMouseDown(false);
-    touchEvent(16, x, y);
+    socket$1.emit('click', {
+      type: 16,
+      x: x,
+      y: y
+    });
   };
   var handleMMove = function handleMMove(e) {
     var currentTargetRect = e.target.getBoundingClientRect();
@@ -2104,7 +2134,11 @@ function Carplay(_ref) {
     var y = e.clientY - currentTargetRect.top;
     x = x / width;
     y = y / height;
-    touchEvent(15, x, y);
+    socket$1.emit('click', {
+      type: 15,
+      x: x,
+      y: y
+    });
   };
   var handleDown = function handleDown(e) {
     var currentTargetRect = e.target.getBoundingClientRect();
@@ -2115,14 +2149,23 @@ function Carplay(_ref) {
     setLastX(x);
     setLastY(y);
     setMouseDown(true);
-    touchEvent(14, x, y);
+    socket$1.emit('click', {
+      type: 14,
+      x: x,
+      y: y
+    });
     e.preventDefault();
   };
   var handleUp = function handleUp(e) {
     var x = lastX;
     var y = lastY;
     setMouseDown(false);
-    touchEvent(16, x, y);
+    console.log('up');
+    socket$1.emit('click', {
+      type: 16,
+      x: x,
+      y: y
+    });
     e.preventDefault();
   };
   var handleMove = function handleMove(e) {
@@ -2131,7 +2174,11 @@ function Carplay(_ref) {
     var y = e.touches[0].clientY - currentTargetRect.top;
     x = x / width;
     y = y / height;
-    touchEvent(15, x, y);
+    socket$1.emit('click', {
+      type: 15,
+      x: x,
+      y: y
+    });
   };
   return /*#__PURE__*/React__default["default"].createElement("div", {
     id: 'main',
@@ -2288,17 +2335,19 @@ PCMPlayer.prototype.flush = function () {
 };
 
 var socket = io__default["default"]("ws://localhost:5005");
+var channel1;
+var channel2;
 function CarplayAudio () {
   var channel1Decode = React.useRef(5);
   var channel2Decode = React.useRef(4);
   React.useEffect(function () {
-    var channel1 = new PCMPlayer({
+    channel1 = new PCMPlayer({
       encoding: '16bitInt',
       channels: 1,
       sampleRate: 16000,
       flushingTime: 50
     });
-    var channel2 = new PCMPlayer({
+    channel2 = new PCMPlayer({
       encoding: '16bitInt',
       channels: 2,
       sampleRate: 48000,
@@ -2340,19 +2389,19 @@ function CarplayAudio () {
           if (data.volume !== 0) {
             channel1.volume(data.volume);
           }
-          channel1.feed(new Uint8Array(data.data));
+          feed1(data);
         } else {
           console.log(channel1Decode.current, data.decode);
           channel1.updateSample(decodeMap[data.decode]);
           channel1Decode.current = data.decode;
-          channel1.feed(new Uint8Array(data.data));
+          feed1(data);
         }
       } else if (data.audioType === 2) {
         if (data.decode === channel2Decode.current) {
           if (data.volume !== 0) {
             channel2.volume(data.volume);
           }
-          channel2.feed(new Uint8Array(data.data));
+          feed2(data);
         } else {
           console.log(channel2Decode.current, data.decode);
           channel2.updateSample(decodeMap[data.decode]);
@@ -2366,6 +2415,38 @@ function CarplayAudio () {
       channel2.destroy();
     };
   }, []);
+  var feed1 = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee(data) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            channel1.feed(new Uint8Array(data.data));
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function feed1(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+  var feed2 = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator__default["default"]( /*#__PURE__*/_regeneratorRuntime__default["default"].mark(function _callee2(data) {
+      return _regeneratorRuntime__default["default"].wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            channel2.feed(new Uint8Array(data.data));
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function feed2(_x2) {
+      return _ref2.apply(this, arguments);
+    };
+  }();
   return /*#__PURE__*/React__default["default"].createElement("div", null);
 }
 
